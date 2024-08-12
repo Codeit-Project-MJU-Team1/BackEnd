@@ -16,3 +16,17 @@ datasource db {
 model Test{
   id String @id
 }
+
+model Group{
+  id Int @id @default(autoincrement())
+  name String
+  password String
+  imageUrl String
+  isPublic Boolean
+  likeCount Int
+  badges String[]
+  postCount Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  introduction String
+}
