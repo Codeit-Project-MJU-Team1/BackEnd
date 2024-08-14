@@ -34,6 +34,14 @@ async function like(groupId){
     return { message : "그룹 공감하기 성공" };
 }
 
+async function isPublic(groupId) {
+    const group = await groupRepository.findById(groupId);
+    if(!group){
+        throw new NotFoundError("존재하지 않습니다.");
+    }
+    return { id : groupId, isPublic : group.isPublic };
+}
+
 async function getGroups(params) {
     const { page = 0, pageSize = 10, sortBy, keyword = "", isPublic = "true"} = params;
     const limit = Number(pageSize);
@@ -69,4 +77,5 @@ export default {
     readGroup,
     verifyPassword,
     like,
+    isPublic,
 }

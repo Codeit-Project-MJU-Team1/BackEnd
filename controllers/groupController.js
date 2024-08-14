@@ -22,7 +22,7 @@ groupController.get('/', async(req, res, next) => {
     } catch(error){
         next(error);
     }
-})
+});
 
 groupController.get('/:groupId', async(req, res, next) =>{
     try{
@@ -32,7 +32,7 @@ groupController.get('/:groupId', async(req, res, next) =>{
     } catch (error){
         next(error);
     }
-})
+});
 
 groupController.post('/:groupId/verify-password', async(req, res, next) => {
     try{
@@ -43,12 +43,22 @@ groupController.post('/:groupId/verify-password', async(req, res, next) => {
     } catch (error){
         next(error);
     }
-})
+});
 
 groupController.post('/:groupId/like', async(req,res,next) => {
     try{
         const groupId = Number(req.params.groupId);
         const data = await groupService.like(groupId);
+        return res.status(200).json(data);
+    } catch (error){
+        next(error);
+    }
+});
+
+groupController.get('/:groupId/is-public', async(req, res, next) => {
+    try{
+        const groupId = Number(req.params.groupId);
+        const data = await groupService.isPublic(groupId);
         return res.status(200).json(data);
     } catch (error){
         next(error);
