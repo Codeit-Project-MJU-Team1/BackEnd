@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.use('/api/groups', groupController);
 
-app.use(errorHandler)
+app.use(errorHandler);
 
 const port = process.env.PORT ?? 3000;
 app.listen(port, () => {

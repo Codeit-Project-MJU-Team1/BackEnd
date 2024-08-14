@@ -1,6 +1,6 @@
 import prisma from '../config/prisma.js';
 
-async function findByName(id){
+async function findById(id){
     return await prisma.group.findUnique({
         where:{
             id,
@@ -24,7 +24,16 @@ async function save(group) {
     });
 }
 
+async function remove(groupId) {
+    return await prisma.group.delete({
+        where: {
+            id: groupId,
+        },
+    });
+}
+
 export default{
-    findByName,
+    findById,
     save,
+    remove,
 };
