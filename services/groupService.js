@@ -25,6 +25,15 @@ async function verifyPassword(groupId, password){
     return { message : "비밀번호가 확인되었습니다." };
 }
 
+async function like(groupId){
+    const group = await groupRepository.findById(groupId);
+    if(!group){
+        throw new NotFoundError("존재하지 않습니다");
+    }
+    await groupRepository.like(groupId);
+    return { message : "그룹 공감하기 성공" };
+}
+
 async function getGroups(params) {
     const { page = 0, pageSize = 10, sortBy, keyword = "", isPublic = "true"} = params;
     const limit = Number(pageSize);
@@ -59,4 +68,5 @@ export default {
     getGroups,
     readGroup,
     verifyPassword,
+    like,
 }

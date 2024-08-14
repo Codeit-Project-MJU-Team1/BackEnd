@@ -45,4 +45,14 @@ groupController.post('/:groupId/verify-password', async(req, res, next) => {
     }
 })
 
+groupController.post('/:groupId/like', async(req,res,next) => {
+    try{
+        const groupId = Number(req.params.groupId);
+        const data = await groupService.like(groupId);
+        return res.status(200).json(data);
+    } catch (error){
+        next(error);
+    }
+})
+
 export default groupController;

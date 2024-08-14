@@ -24,6 +24,19 @@ async function save(group) {
     });
 }
 
+async function like(groupId) {
+    return await prisma.group.update({
+        where : {
+            id : groupId,
+        },
+        data : {
+            likeCount : {
+                increment : 1,
+            },
+        },
+    });
+}
+
 async function getGroups(offset, limit, orderBy, keyword, isPublic){
     return await prisma.group.findMany({
         where: {
@@ -53,6 +66,7 @@ async function getGroupsByBadge(offset, limit,keyword,isPublic) {
 export default{
     findById,
     save,
+    like,
     getGroups,
     getGroupsByBadge,
 };
