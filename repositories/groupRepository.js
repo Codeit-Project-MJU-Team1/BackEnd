@@ -1,6 +1,6 @@
 import prisma from '../config/prisma.js';
 
-async function findByName(id){
+async function findById(id){
     return await prisma.group.findUnique({
         where:{
             id,
@@ -51,7 +51,7 @@ async function getGroupsByBadge(offset, limit,keyword,isPublic) {
 }
 
 export default{
-    findByName,
+    findById,
     save,
     getGroups,
     getGroupsByBadge,

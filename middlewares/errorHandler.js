@@ -1,10 +1,11 @@
+import {Prisma} from '@prisma/client';
 export default function errorHandler(error, req, res, next) {
   if (error.name === 'StructError' ||
     error instanceof Prisma.PrismaClientValidationError
   ) {
     return res.status(400).send({ message: '잘못된 요청입니다' });
-  } else if (e instanceof Prisma.PrismaClientKnownRequestError &&
-    e.code === 'P2025'
+  } else if (error instanceof Prisma.PrismaClientKnownRequestError &&
+    error.code === 'P2025'
   ) {
     res.sendStatus(404);
   }
