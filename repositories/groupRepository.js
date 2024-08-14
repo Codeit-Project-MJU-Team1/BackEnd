@@ -24,7 +24,35 @@ async function save(group) {
     });
 }
 
+async function getGroups(offset, limit, orderBy, keyword, isPublic){
+    return await prisma.group.findMany({
+        where: {
+            name: {
+                contains: keyword,
+            },
+            isPublic,
+        },
+        orderBy,
+        skip: offset,
+        take: limit,
+        
+    })
+}
+
+async function getGroupsByBadge(offset, limit,keyword,isPublic) {
+    return await prisma.$queryRaw`
+    SELECT *
+    FROM "Group"
+    WHERE name ILIKE '%' || ${keyword} || '%'
+          AND "isPublic" = ${isPublic}
+    ORDER BY COALESCE(ARRAY_LENGTH(badges, 1),0) DESC
+    LIMIT ${limit} OFFSET ${offset};
+    `;
+}
+
 export default{
     findByName,
     save,
+    getGroups,
+    getGroupsByBadge,
 };

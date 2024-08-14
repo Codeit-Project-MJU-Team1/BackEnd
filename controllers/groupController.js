@@ -15,5 +15,13 @@ groupController.post('/', async(req, res, next) => {
     }
 });
 
+groupController.get('/', async(req, res, next) => {
+    try{
+        const data = await groupService.getGroups(req.query);
+        res.status(200).send(data);
+    } catch(error){
+        next(error);
+    }
+})
 
 export default groupController;
