@@ -1,19 +1,28 @@
 import groupRepository from '../repositories/groupRepository.js';
-
-async function readGroup(groudId) {
-    const group = await groupRepository.findById(groudId);
-    if(!group){
-        const error = new Error();
-        error.code = 404;
-        error.message = "존재하지 않습니다";
-        throw error;
-    }
-    return filterSensitiveUserData(await groupRepository.findById(groudId));
-}
+import {ForbiddenError, NotFoundError , UnauthorizedError} from '../config/error.js';
 
 async function createGroup(group){
     const createdGroup = await groupRepository.save(group);
     return filterSensitiveUserData(createdGroup);
+}
+
+async function readGroup(groupId) {
+    const group = await groupRepository.findById(groupId);
+    if(!group){
+        throw new NotFoundError("존재하지 않습니다");
+    }
+    return filterSensitiveUserData(await groupRepository.findById(groudId));
+}
+
+async function verifyPassword(groupId, password){
+    const group = await groupRepository.findById(groupId);
+    if(!group){
+        throw new NotFoundError("존재하지 않습니다");
+    }
+    if(group.password !== password){
+        throw new UnauthorizedError("비밀번호가 틀렸습니다");
+    }
+    return { message : "비밀번호가 확인되었습니다." };
 }
 
 async function getGroups(params) {
@@ -49,4 +58,5 @@ export default {
     createGroup,
     getGroups,
     readGroup,
+    verifyPassword,
 }

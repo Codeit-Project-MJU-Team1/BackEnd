@@ -1,6 +1,6 @@
 import express from 'express';
 import { assert } from 'superstruct';
-import { createGroup } from '../struct.js';
+import { createGroup, verifyPassword } from '../struct.js';
 import groupService from '../services/groupService.js';
 
 const groupController = express.Router();
@@ -28,6 +28,17 @@ groupController.get('/:groupId', async(req, res, next) =>{
     try{
         const groupId = Number(req.params.groupId);
         const data = await groupService.readGroup(groupId);
+        return res.status(200).json(data);
+    } catch (error){
+        next(error);
+    }
+})
+
+groupController.post('/:groupId/verify-password', async(req, res, next) => {
+    try{
+        assert(req.body, verifyPassword);
+        const groupId = Number(req.params.groupId);
+        const data = await groupService.verifyPassword(groupId, req.body.password);
         return res.status(200).json(data);
     } catch (error){
         next(error);
