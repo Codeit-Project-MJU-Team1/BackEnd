@@ -11,7 +11,7 @@ async function readGroup(groupId) {
     if(!group){
         throw new NotFoundError("존재하지 않습니다");
     }
-    return filterSensitiveUserData(await groupRepository.findById(groudId));
+    return filterSensitiveUserData(await groupRepository.findById(groupId));
 }
 
 async function verifyPassword(groupId, password){
