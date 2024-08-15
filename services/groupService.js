@@ -6,6 +6,11 @@ async function createGroup(group){
     return filterSensitiveUserData(createdGroup);
 }
 
+function filterSensitiveUserData(group){
+    const {password, ...rest} = group;
+    return rest;
+}
+
 async function readGroup(groupId) {
     const group = await groupRepository.findById(groupId);
     if(!group){
@@ -64,11 +69,6 @@ async function getGroups(params) {
         }
         return await groupRepository.getGroups(offset, limit, orderBy, keyword, Boolean(isPublic)); 
     }
-}
-
-function filterSensitiveUserData(group){
-    const {password, ...rest} = group;
-    return rest;
 }
 
 async function deleteGroup(groupId, password) {

@@ -1,7 +1,9 @@
 import express from 'express';
 import { assert } from 'superstruct';
-import { createGroup, deleteGroup, updateGroup, verifyPassword } from '../struct.js';
+import { createGroup, deleteGroup, updateGroup, verifyPassword } from '../struct/groupStruct.js';
+import  { createPost } from '../struct/postStruct.js';
 import groupService from '../services/groupService.js';
+import postService from '../services/postService.js';
 
 const groupController = express.Router();
 
@@ -21,7 +23,7 @@ groupController.delete('/:groupId', async (req, res, next) => {
         const groupId = Number(req.params.groupId);
         const password = req.body.password;
         const data = await groupService.deleteGroup(groupId, password);
-        return res.sendStatus(200).json(data);
+        return res.status(200).json(data);
     } catch (error) {
         next(error);
     }
@@ -83,6 +85,18 @@ groupController.get('/:groupId/is-public', async(req, res, next) => {
         const groupId = Number(req.params.groupId);
         const data = await groupService.isPublic(groupId);
         return res.status(200).json(data);
+    } catch (error){
+        next(error);
+    }
+})
+
+groupController.post('/:groupId/posts', async(req, res, next) =>{
+    try{
+        assert(req.body, createPost);
+
+        const groupId = Number(req.params.groupId);
+        const post = await postService.createPost(req.body, groupId);
+        return res.status(201).json(post);
     } catch (error){
         next(error);
     }

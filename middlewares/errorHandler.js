@@ -3,6 +3,7 @@ export default function errorHandler(error, req, res, next) {
   if (error.name === 'StructError' ||
     error instanceof Prisma.PrismaClientValidationError
   ) {
+    console.log(error.name);
     return res.status(400).send({ message: '잘못된 요청입니다' });
   } else if (error instanceof Prisma.PrismaClientKnownRequestError &&
     error.code === 'P2025'

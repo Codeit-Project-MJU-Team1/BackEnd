@@ -19,6 +19,7 @@ export const updateGroup = s.object({
     isPublic : s.boolean(),
     introduction: s.size(s.string(),1,100),
 });
+
 export const verifyPassword = s.object({
     password : s.size(s.string(), 1, 30),
 });

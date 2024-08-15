@@ -3,12 +3,14 @@ import 'dotenv/config';
 import errorHandler from './middlewares/errorHandler.js';
 
 import groupController from './controllers/groupController.js';
+import postController from './controllers/postController.js';
 
 const app = express();
 
 app.use(express.json());
 
 app.use('/api/groups', groupController);
+app.use('/api/posts', postController);
 
 app.use(errorHandler);
 
