@@ -47,7 +47,7 @@ async function getGroups(params) {
     const limit = Number(pageSize);
     const offset = Number(page) * limit;
     if(sortBy === 'mostBadge'){
-        return await groupRepository.getGroupsByBadge(offset,limit,keyword,Boolean(isPublic));
+        return await groupRepository.getGroupsByBadge(offset,limit,keyword,JSON.parse(isPublic));
     }
     else{
         let orderBy;
@@ -62,7 +62,7 @@ async function getGroups(params) {
                 orderBy = { createdAt : 'desc' };
                 break;
         }
-        return await groupRepository.getGroups(offset, limit, orderBy, keyword, Boolean(isPublic)); 
+        return await groupRepository.getGroups(offset, limit, orderBy, keyword, JSON.parse(isPublic)); 
     }
 }
 
