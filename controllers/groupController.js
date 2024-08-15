@@ -21,7 +21,7 @@ groupController.delete('/:groupId', async (req, res, next) => {
         const groupId = Number(req.params.groupId);
         const password = req.body.password;
         const data = await groupService.deleteGroup(groupId, password);
-        return res.sendStatus(200).json(data);
+        return res.status(200).json(data);
     } catch (error) {
         next(error);
     }
