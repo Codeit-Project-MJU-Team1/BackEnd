@@ -10,17 +10,17 @@ async function findById(id){
 
 async function save(group) {
     return await prisma.group.create({
-      data: {
-        //id : autoIncrement
-        name: group.name,
-        password : group.password,
-        imageUrl : group.imageUrl,
-        isPublic : group.isPublic,
-        likeCount : 0,
-        badges : [],
-        postCount : 0,
-        introduction : group.introduction,
-      },
+        data: {
+            //id : autoIncrement
+            name: group.name,
+            password : group.password,
+            imageUrl : group.imageUrl,
+            isPublic : group.isPublic,
+            likeCount : 0,
+            badges : [],
+            postCount : 0,
+            introduction : group.introduction,
+        },
     });
 }
 
@@ -32,8 +32,18 @@ async function remove(groupId) {
     });
 }
 
+async function update(groupId, data) {
+    return await prisma.group.update({
+        where: {
+            id: groupId,
+        },
+        data
+    });
+}
+
 export default{
     findById,
     save,
     remove,
+    update,
 };
