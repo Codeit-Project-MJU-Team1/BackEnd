@@ -21,12 +21,20 @@ async function createPost(groupId, post){
     return filterSensitiveUserData(createdPost);
 }
 
+async function readPost(postId) {
+    const post = await postRepository.findById(postId);
+    if(!post){
+        throw new NotFoundError("존재하지 않습니다");
+    }
+    return filterSensitiveUserData(await postRepository.findById(postId));
+}
+
 function filterSensitiveUserData(post){ 
     const {postPassword, groupPassword, ...rest} = post;
     return rest;
 }
 
 export default {
-    createPost,
+    createPost, readPost,
 }
 

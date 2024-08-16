@@ -103,15 +103,16 @@ groupController.post('/:groupId/posts', async(req, res, next) => {
     }
 });
 
-// postController.post('/', async(req, res, next) => {
-//     try{
-//         assert(req.body, createPost); // 검증 req.body랑 createPost랑 형식이 일치하는지
-//         const groupId = Number(req.params.groupId);
-//         const post = await postService.createPost(req.body, groupId);
-//         return res.status(201).json(post);
-//     } catch (error){
-//         next(error);
-//     }
-// });
+// 게시글 상제 정보 조회
+groupController.get('/:groupId/posts/:postId', async(req, res, next) =>{
+    try{
+        const postId = Number(req.params.postId);
+        console.log(postId);
+        const data = await postService.readPost(postId);
+        return res.status(200).json(data);
+    } catch (error){
+        next(error);
+    }
+});
 
 export default groupController;
