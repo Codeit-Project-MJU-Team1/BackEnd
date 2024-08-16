@@ -38,6 +38,7 @@ model Post {
   title        String
   content      String
   imageUrl     String
+  password     String
   tags         String[]
   location     String
   moment       DateTime

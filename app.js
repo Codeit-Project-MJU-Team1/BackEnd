@@ -1,7 +1,6 @@
 import express from 'express';
 import 'dotenv/config';
 import errorHandler from './middlewares/errorHandler.js';
-
 import groupController from './controllers/groupController.js';
 
 const app = express();
