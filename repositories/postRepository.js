@@ -28,9 +28,17 @@ async function update(postId, data){
         },
         data,
     });
-}
+};
+
+async function remove(postId) {
+    return await prisma.post.delete({
+        where : {
+            id : postId,
+        },  
+    });
+};
 
 export default {
     save, findById,
-    update,
+    update, remove,
 };

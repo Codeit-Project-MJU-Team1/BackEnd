@@ -24,3 +24,7 @@ export const updatePost = s.object({
     moment: s.date(),
     isPublic: s.boolean(),
 });
+
+export const deletePost = s.object({
+    postPassword: s.size(s.string(), 1, 30),
+});
