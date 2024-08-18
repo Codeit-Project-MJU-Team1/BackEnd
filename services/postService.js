@@ -34,7 +34,20 @@ function filterSensitiveUserData(post){
     return rest;
 }
 
+async function verifyPassword(postId, password){
+    const post = await postRepository.findById(postId);
+    if(!post){
+        throw new NotFoundError("존재하지 않습니다");
+    }
+    if(post.password !== password){
+        console.log(post.password);
+        console.log(password);
+        throw new UnauthorizedError("비밀번호가 틀렸습니다");
+    }
+    return { message : "비밀번호가 확인되었습니다." };
+}
+
 export default {
-    createPost, readPost,
+    createPost, readPost, verifyPassword,
 }
 

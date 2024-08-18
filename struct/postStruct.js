@@ -12,3 +12,7 @@ export const createPost = s.object({
     moment: s.date(),
     isPublic: s.boolean(),
 });
+
+export const verifyPassword = s.object({
+    password : s.size(s.string(), 1, 30),
+});
