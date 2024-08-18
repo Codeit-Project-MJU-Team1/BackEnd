@@ -4,7 +4,7 @@ async function findById(id) {
     return await prisma.post.findUnique({
         where: {
             id,
-        }
+        },
     });
 }
 
@@ -21,6 +21,24 @@ async function save(groupId, data) {
     });
 }
 
+async function update(postId, data){
+    return await prisma.post.update({
+        where: {
+            id : postId,
+        },
+        data,
+    });
+};
+
+async function remove(postId) {
+    return await prisma.post.delete({
+        where : {
+            id : postId,
+        },  
+    });
+};
+
 export default {
     save, findById,
+    update, remove,
 };

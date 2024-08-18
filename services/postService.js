@@ -29,6 +29,31 @@ async function readPost(postId) {
     return filterSensitiveUserData(await postRepository.findById(postId));
 }
 
+async function updatePost(postId, post){
+    const existedPost = await postRepository.findById(postId);
+    if(!existedPost){
+        throw new NotFoundError("존재하지 않습니다");
+    }
+    if(existedPost.password !== post.postPassword){
+        throw new ForbiddenError("비밀번호가 틀렸습니다");
+    }
+    const { postPassword , ...data } = post;
+    data.password = postPassword;
+    return await postRepository.update(postId, data);
+}
+
+async function deletePost(postId, postPassword) {
+    const existedPost = await postRepository.findById(postId);
+    if(!existedPost){
+        throw new NotFoundError("존재하지 않습니다");
+    }
+    if(existedPost.password !== postPassword){
+        throw new ForbiddenError("비밀번호가 틀렸습니다");
+    }
+    await postRepository.remove(postId);
+    return { message : "게시글 삭제 성공" };
+}
+
 function filterSensitiveUserData(post){ 
     const {postPassword, groupPassword, ...rest} = post;
     return rest;
@@ -48,6 +73,6 @@ async function verifyPassword(postId, password){
 }
 
 export default {
-    createPost, readPost, verifyPassword,
+    updatePost, deletePost, createPost, readPost, verifyPassword,
 }
 

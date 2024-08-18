@@ -1,19 +1,32 @@
 import express from 'express';
 import { assert } from 'superstruct';
-import { createPost } from '../struct/postStruct.js';
+import { createPost, updatePost , deletePost } from '../struct/postStruct.js';
 import postService from '../services/postService.js';
 
 const postController = express.Router();
 
-postController.post('/', async(req, res, next) => {
+postController.put('/:postId', async(req, res, next) => {
     try{
-        assert(req.body, createPost); // 검증 req.body랑 createPost랑 형식이 일치하는지
-        const groupId = Number(req.params.groupId);
-        const post = await postService.createPost(req.body, groupId);
-        return res.status(201).json(post);
-    } catch (error){
+        const postId = Number(req.params.postId);
+        const {moment, ...post} = req.body;
+        post.moment = new Date(moment);
+        assert(post, updatePost);
+        const data = await postService.updatePost(postId, post);
+        return res.status(200).json(data);
+    } catch(error){
         next(error);
     }
 });
+
+postController.delete('/:postId', async(req, res, next) => {
+    try{
+        const postId = Number(req.params.postId);
+        assert(req.body, deletePost);
+        const data = await postService.deletePost(postId, req.body.postPassword);
+        return res.status(200).send(data);
+    } catch(error){
+        next(error);
+    }
+})
 
 export default postController;
