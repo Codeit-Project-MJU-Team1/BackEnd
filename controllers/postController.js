@@ -1,6 +1,6 @@
 import express from 'express';
 import { assert } from 'superstruct';
-import { updatePost , deletePost, readPost, verifyPassword} from '../struct/postStruct.js';
+import { updatePost , deletePost, verifyPassword} from '../struct/postStruct.js';
 import postService from '../services/postService.js';
 
 const postController = express.Router();
@@ -59,6 +59,17 @@ postController.get('/:postId', async(req, res, next) => {
     try{
         const postId = Number(req.params.postId);
         const data = await postService.readPost(postId);
+        return res.status(200).json(data);
+    } catch (error){
+        next(error);
+    }
+});
+
+// 게시글 공개 여부 확인
+postController.get('/:postId/is-public', async(req, res, next) => {
+    try{
+        const postId = Number(req.params.postId);
+        const data = await postService.isPublic(postId);
         return res.status(200).json(data);
     } catch (error){
         next(error);
