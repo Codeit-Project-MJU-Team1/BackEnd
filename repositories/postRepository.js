@@ -51,8 +51,26 @@ async function like(postId) {
     });   
 }
 
+async function getPosts(offset, limit, orderBy, keyword, isPublic, groupId){
+    return await prisma.group.findMany({
+        where: {
+            groupId: groupId,
+            title: {
+                contains: keyword,
+            },
+            isPublic,
+        },
+        orderBy,
+        skip: offset,
+        take: limit,
+        
+    })
+}
+
+
+
 export default {
     save, findById,
     update, remove,
-    like,
+    like, getPosts,
 };

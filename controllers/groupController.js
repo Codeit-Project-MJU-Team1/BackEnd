@@ -1,13 +1,13 @@
 import express from 'express';
 import { assert } from 'superstruct';
 import { createGroup, deleteGroup, updateGroup, verifyPassword } from '../struct/groupStruct.js';
-import { createPost } from '../struct/postStruct.js';
+import { createPost, readPost } from '../struct/postStruct.js';
 import groupService from '../services/groupService.js';
 import postService from '../services/postService.js';
 
 const groupController = express.Router();
 
-// 그룹 생성
+// 그룹 등록
 groupController.post('/', async(req, res, next) => {
     try{
         assert(req.body, createGroup);
@@ -64,7 +64,7 @@ groupController.get('/:groupId', async(req, res, next) =>{
     }
 });
 
-// 그룹 조회 권환 확인
+// 그룹 조회 권한 확인
 groupController.post('/:groupId/verify-password', async(req, res, next) => {
     try{
         assert(req.body, verifyPassword);
@@ -112,25 +112,34 @@ groupController.post('/:groupId/posts', async(req, res, next) => {
     }
 });
 
-// 게시글 상세 정보 조회
-groupController.get('/:groupId/posts/:postId', async(req, res, next) =>{
-    try{
-        const postId = Number(req.params.postId);
-        const data = await postService.readPost(postId);
-        return res.status(200).json(data);
-    } catch (error){
-        next(error);
-    }
-});
+// // 게시글 상세 정보 조회
+// groupController.get('/:groupId/posts/:postId', async(req, res, next) => {
+//     try{
+//         const postId = Number(req.params.postId);
+//         const data = await postService.readPost(postId);
+//         return res.status(200).json(data);
+//     } catch (error){
+//         next(error);
+//     }
+// });
 
-// 게시글 조회 권한 확인
-groupController.post('/:groupId/posts/:postId/verify-password', async(req, res, next) =>{
+// // 게시글 공개 여부 확인
+// groupController.get('/:groupId/posts/:postId/is-public', async(req, res, next) => {
+//     try{
+//         const postId = Number(req.params.postId);
+//         const data = await postService.isPublic(postId);
+//         return res.status(200).json(data);
+//     } catch (error){
+//         next(error);
+//     }
+// });
+
+// 게시글 목록 조회
+groupController.get('/:groupId/posts', async(req, res, next) => {
     try{
-        assert(req.body, verifyPassword);
-        const postId = Number(req.params.postId);
-        const data = await postService.verifyPassword(postId, req.body.password);
-        return res.status(200).json(data);
-    } catch (error){
+        const data = await postService.getPosts(req.params);
+        res.status(200).send(data);
+    } catch(error){
         next(error);
     }
 });

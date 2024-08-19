@@ -32,3 +32,14 @@ export const deletePost = s.object({
 export const verifyPassword = s.object({
     password : s.size(s.string(), 1, 30),
 });
+
+export const readPost = s.object({
+    nickname : s.size(s.string(), 1, 30),
+    title: s.size(s.string(), 1, 30),
+    content: s.size(s.string(), 1, 300),
+    imageUrl : s.string(),
+    tags: s.array(s.size(s.string(), 1, 30)),
+    location: s.size(s.string(), 1, 30),
+    moment: s.date(),
+    isPublic: s.boolean(),
+})
