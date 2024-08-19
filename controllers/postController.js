@@ -54,5 +54,16 @@ postController.post('/:postId/verify-password', async(req, res, next) =>{
     }
 });
 
+// 게시글 상세 정보 조회
+postController.get('/:postId', async(req, res, next) => {
+    try{
+        const postId = Number(req.params.postId);
+        const data = await postService.readPost(postId);
+        return res.status(200).json(data);
+    } catch (error){
+        next(error);
+    }
+});
+
 
 export default postController;
