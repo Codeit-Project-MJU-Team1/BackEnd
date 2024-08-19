@@ -38,7 +38,21 @@ async function remove(postId) {
     });
 };
 
+async function like(postId) {
+    return await prisma.post.update({
+        where: {
+            id : postId,
+        },
+        data : {
+            likeCount: {
+                increment : 1,
+            },
+        },
+    });   
+}
+
 export default {
     save, findById,
     update, remove,
+    like,
 };

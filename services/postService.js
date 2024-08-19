@@ -72,7 +72,16 @@ async function verifyPassword(postId, password){
     return { message : "비밀번호가 확인되었습니다." };
 }
 
+async function likePost(postId) {
+    const existedPost = await postRepository.findById(postId);
+    if(!existedPost){
+        throw new NotFoundError("존재하지 않습니다");
+    }
+    await postRepository.like(postId);
+    return { message : "게시글 공감하기 성공" };
+}
+
 export default {
-    updatePost, deletePost, createPost, readPost, verifyPassword,
+    updatePost, deletePost, createPost, readPost, verifyPassword, likePost,
 }
 

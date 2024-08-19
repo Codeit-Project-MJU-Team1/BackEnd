@@ -29,4 +29,14 @@ postController.delete('/:postId', async(req, res, next) => {
     }
 })
 
+postController.post('/:postId/like', async(req, res, next) => {
+    try{
+        const postId = Number(req.params.postId);
+        const data = await postService.likePost(postId);
+        return res.status(200).send(data);
+    } catch(error){
+        next(error);
+    }
+})
+
 export default postController;
