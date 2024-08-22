@@ -10,6 +10,7 @@ export default function errorHandler(error, req, res, next) {
     res.sendStatus(404);
   }
   const status = error.code ?? 500;
+
   console.error(error);
   return res.status(status).json({
     path: req.path,

@@ -112,32 +112,11 @@ groupController.post('/:groupId/posts', async(req, res, next) => {
     }
 });
 
-// // 게시글 상세 정보 조회
-// groupController.get('/:groupId/posts/:postId', async(req, res, next) => {
-//     try{
-//         const postId = Number(req.params.postId);
-//         const data = await postService.readPost(postId);
-//         return res.status(200).json(data);
-//     } catch (error){
-//         next(error);
-//     }
-// });
-
-// // 게시글 공개 여부 확인
-// groupController.get('/:groupId/posts/:postId/is-public', async(req, res, next) => {
-//     try{
-//         const postId = Number(req.params.postId);
-//         const data = await postService.isPublic(postId);
-//         return res.status(200).json(data);
-//     } catch (error){
-//         next(error);
-//     }
-// });
-
 // 게시글 목록 조회
 groupController.get('/:groupId/posts', async(req, res, next) => {
     try{
-        const data = await postService.getPosts(req.params);
+        const groupId = Number(req.params.groupId);
+        const data = await postService.getPosts(groupId, req.params);
         res.status(200).send(data);
     } catch(error){
         next(error);
