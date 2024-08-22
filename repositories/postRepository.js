@@ -52,7 +52,7 @@ async function like(postId) {
 }
 
 async function getPosts(offset, limit, orderBy, keyword, isPublic, groupId){
-    return await prisma.post.findMany({
+    const result = await prisma.post.findMany({
         where: {
             groupId: groupId,
             title: {
@@ -63,7 +63,8 @@ async function getPosts(offset, limit, orderBy, keyword, isPublic, groupId){
         orderBy,
         skip: offset,
         take: limit,
-    })
+    });
+    return result;
 }
 
 

@@ -116,7 +116,7 @@ groupController.post('/:groupId/posts', async(req, res, next) => {
 groupController.get('/:groupId/posts', async(req, res, next) => {
     try{
         const groupId = Number(req.params.groupId);
-        const data = await postService.getPosts(groupId, req.params);
+        const data = await postService.getPosts(groupId, req.query);
         res.status(200).send(data);
     } catch(error){
         next(error);
