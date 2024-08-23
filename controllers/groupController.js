@@ -1,10 +1,13 @@
 import express from 'express';
 import { assert } from 'superstruct';
-import { createGroup, deleteGroup, updateGroup, verifyPassword } from '../struct.js';
+import { createGroup, deleteGroup, updateGroup, verifyPassword } from '../struct/groupStruct.js';
+import { createPost, readPost } from '../struct/postStruct.js';
 import groupService from '../services/groupService.js';
+import postService from '../services/postService.js';
 
 const groupController = express.Router();
 
+// 그룹 등록
 groupController.post('/', async(req, res, next) => {
     try{
         assert(req.body, createGroup);
@@ -15,6 +18,7 @@ groupController.post('/', async(req, res, next) => {
     }
 });
 
+// 그룹 삭제
 groupController.delete('/:groupId', async (req, res, next) => {
     try {
         assert(req.body, deleteGroup);
@@ -27,6 +31,7 @@ groupController.delete('/:groupId', async (req, res, next) => {
     }
 });
 
+// 그룹 목록 조회
 groupController.get('/', async(req, res, next) => {
     try{
         const data = await groupService.getGroups(req.query);
@@ -36,6 +41,7 @@ groupController.get('/', async(req, res, next) => {
     }
 });
 
+// 그룹 수정
 groupController.put('/:groupId', async (req, res, next) => {
     try {
         assert(req.body, updateGroup);
@@ -47,6 +53,7 @@ groupController.put('/:groupId', async (req, res, next) => {
     }
 });
 
+// 그룹 상세 정보 조회
 groupController.get('/:groupId', async(req, res, next) =>{
     try{
         const groupId = Number(req.params.groupId);
@@ -57,6 +64,7 @@ groupController.get('/:groupId', async(req, res, next) =>{
     }
 });
 
+// 그룹 조회 권한 확인
 groupController.post('/:groupId/verify-password', async(req, res, next) => {
     try{
         assert(req.body, verifyPassword);
@@ -68,6 +76,7 @@ groupController.post('/:groupId/verify-password', async(req, res, next) => {
     }
 });
 
+// 그룹 공감하기
 groupController.post('/:groupId/like', async(req,res,next) => {
     try{
         const groupId = Number(req.params.groupId);
@@ -78,6 +87,7 @@ groupController.post('/:groupId/like', async(req,res,next) => {
     }
 });
 
+// 그룹 공개 여부 확인
 groupController.get('/:groupId/is-public', async(req, res, next) => {
     try{
         const groupId = Number(req.params.groupId);
@@ -86,6 +96,31 @@ groupController.get('/:groupId/is-public', async(req, res, next) => {
     } catch (error){
         next(error);
     }
-})
+});
+
+// 게시글 등록
+groupController.post('/:groupId/posts', async(req, res, next) => {
+    try{
+        const groupId = Number(req.params.groupId);
+        const {moment , ...rest} = req.body;
+        rest.moment = new Date(moment);
+        assert(rest, createPost);
+        const data = await postService.createPost(groupId, rest);
+        return res.status(200).json(data);
+    } catch(error){
+        next(error);
+    }
+});
+
+// 게시글 목록 조회
+groupController.get('/:groupId/posts', async(req, res, next) => {
+    try{
+        const groupId = Number(req.params.groupId);
+        const data = await postService.getPosts(groupId, req.query);
+        res.status(200).send(data);
+    } catch(error){
+        next(error);
+    }
+});
 
 export default groupController;

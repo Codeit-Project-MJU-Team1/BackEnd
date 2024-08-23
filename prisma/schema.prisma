@@ -17,16 +17,35 @@ model Test{
   id String @id
 }
 
-model Group{
-  id Int @id @default(autoincrement())
-  name String
-  password String
-  imageUrl String
-  isPublic Boolean
-  likeCount Int
-  badges String[]
-  postCount Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Group {
+  id           Int      @id @default(autoincrement())
+  name         String
+  password     String
+  imageUrl     String
+  isPublic     Boolean
+  likeCount    Int
+  badges       String[]
+  postCount    Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   introduction String
+  posts        Post[]  // 1:M
+}
+
+model Post {
+  id           Int      @id @default(autoincrement())
+  nickname     String
+  title        String
+  content      String
+  imageUrl     String
+  password     String
+  tags         String[]
+  location     String
+  moment       DateTime
+  isPublic     Boolean
+  likeCount    Int
+  commentCount Int
+  createdAt    DateTime @default(now())
+  group        Group?    @relation(fields: [groupId], references: [id], onDelete: Cascade) // FK
+  groupId      Int?
 }

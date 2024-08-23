@@ -88,6 +88,7 @@ async function deleteGroup(groupId, password) {
 async function updateGroup(groupId, data){
 
     const updatedGroup = await groupRepository.findById(groupId); 
+    console.log(groupId)
     if (!updatedGroup) {
         throw new NotFoundError('존재하지 않습니다');
     }
