@@ -1,7 +1,9 @@
 import express from 'express';
 import { assert } from 'superstruct';
 import { updatePost , deletePost, verifyPassword} from '../struct/postStruct.js';
+import { createComment } from '../struct/commentStruct.js';
 import postService from '../services/postService.js';
+import commentService from '../services/commentService.js';
 
 const postController = express.Router();
 
@@ -76,5 +78,16 @@ postController.get('/:postId/is-public', async(req, res, next) => {
     }
 });
 
+//댓글 등록
+postController.post('/:postId/comments', async(req, res, next) => {
+    try{
+        const postId = Number(req.params.postId);
+        assert(req.body, createComment);
+        const data = await commentService.createComment(postId, req.body);
+        return res.status(201).json(data);
+    } catch (error){
+        next(error);
+    }
+})
 
 export default postController;
