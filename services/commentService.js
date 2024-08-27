@@ -17,6 +17,13 @@ function filterSensitiveUserData(comment){
     return rest;
 }
 
+async function getComment(postId, params) {
+    const { page = 0, pageSize = 10} = params;
+    const limit = Number(pageSize);
+    const offset = Number(page) * limit;
+    return await commentRepository.getComments(offset, limit, postId); 
+}
+
 export default{
-    createComment,
+    createComment, getComment
 }

@@ -78,7 +78,7 @@ postController.get('/:postId/is-public', async(req, res, next) => {
     }
 });
 
-//댓글 등록
+// 댓글 등록
 postController.post('/:postId/comments', async(req, res, next) => {
     try{
         const postId = Number(req.params.postId);
@@ -86,6 +86,17 @@ postController.post('/:postId/comments', async(req, res, next) => {
         const data = await commentService.createComment(postId, req.body);
         return res.status(201).json(data);
     } catch (error){
+        next(error);
+    }
+})
+
+// 댓글 목록 조회
+postController.get('/:postId/comments', async(req, res, next) => {
+    try{
+        const postId = Number(req.params.postId);
+        const data = await commentService.getComment(postId, req.query);
+        res.status(200).send(data);
+    } catch(error){
         next(error);
     }
 })

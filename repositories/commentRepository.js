@@ -11,6 +11,17 @@ async function save(postId, data) {
     });
 }
 
+async function getComments(offset, limit, postId){
+    const result = await prisma.comment.findMany({
+        where: {
+            postId: postId,
+        },
+        skip: offset,
+        take: limit,
+    });
+    return result;
+}
+
 export default{
-    save,
+    save, getComments
 }
