@@ -1,6 +1,6 @@
 import express from 'express';
 import { assert } from 'superstruct';
-import { updateComment } from '../struct/commentStruct.js';
+import { updateComment, deleteComment } from '../struct/commentStruct.js';
 import commentService from '../services/commentService.js';
 
 const commentController = express.Router();
@@ -13,6 +13,18 @@ commentController.put('/:commentId', async(req, res, next) => {
         assert(comment, updateComment);
         const data = await commentService.updateComment(commentId, comment);
         return res.status(200).json(data);
+    } catch(error){
+        next(error);
+    }
+});
+
+// 댓글 삭제
+commentController.delete('/:commentId', async(req, res, next) => {
+    try{
+        const commentId = Number(req.params.commentId);
+        assert(req.body, deleteComment);
+        const data = await commentService.deleteComment(commentId, req.body.password);
+        return res.status(200).send(data);
     } catch(error){
         next(error);
     }

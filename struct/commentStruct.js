@@ -11,3 +11,7 @@ export const updateComment = s.object({
     content: s.size(s.string(), 1, 300),
     commentPassword: s.size(s.string(), 1, 30),
 });
+
+export const deleteComment = s.object({
+    password : s.size(s.string(), 1, 30),
+});

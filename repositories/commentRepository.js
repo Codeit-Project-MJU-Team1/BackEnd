@@ -39,7 +39,15 @@ async function update(commentId, data){
     });
 }
 
+async function remove(commentId) {
+    return await prisma.comment.delete({
+        where: {
+            id: commentId,
+        },
+    });
+}
+
 
 export default{
-    save, getComments, update, findById
+    save, getComments, update, findById, remove
 }

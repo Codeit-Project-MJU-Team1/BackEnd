@@ -37,6 +37,20 @@ async function updateComment(commentId, comment){
     return await commentRepository.update(commentId, data);
 }
 
+async function deleteComment(commentId, commentPassword) {
+    const existedComment = await commentRepository.findById(commentId);
+    if(!existedComment){
+        throw new NotFoundError("존재하지 않습니다");
+    }
+    if(existedComment.password !== commentPassword){
+        console.log(existedComment.password);
+        console.log(commentPassword);
+        throw new ForbiddenError("비밀번호가 틀렸습니다");
+    }
+    await commentRepository.remove(commentId);
+    return { message : "게시글 삭제 성공" };
+}
+
 export default {
-    createComment, getComment, updateComment,
+    createComment, getComment, updateComment, deleteComment
 }
