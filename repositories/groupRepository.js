@@ -19,6 +19,7 @@ async function save(group) {
             likeCount : 0,
             badges : [],
             postCount : 0,
+            postStreak : 0,
             introduction : group.introduction,
         },
     });
