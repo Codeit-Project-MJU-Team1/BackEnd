@@ -4,11 +4,11 @@ import {ForbiddenError, NotFoundError , UnauthorizedError} from '../config/error
 
 async function createComment(postId, data) {
     const post = await postRepository.findById(postId);
-    console.log(post);
     if(!post){
         throw new NotFoundError("게시글이 존재하지 않습니다");
     }
     const comment = await commentRepository.save(postId, data);
+    await postRepository.update(postId, {commentCount : post.commentCount + 1});
     return filterSensitiveUserData(comment);
 }
 
@@ -47,7 +47,8 @@ async function deleteComment(commentId, commentPassword) {
         console.log(commentPassword);
         throw new ForbiddenError("비밀번호가 틀렸습니다");
     }
-    await commentRepository.remove(commentId);
+    const post = await postRepository.findById(existedComment.postId);
+    await postRepository.update(post.id, {commentCount : post.commentCount - 1});
     return { message : "게시글 삭제 성공" };
 }
 
