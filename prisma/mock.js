@@ -123,3 +123,31 @@ export const POSTS = [
         commentCount: 219,
     }
 ];
+
+export const COMMENTS = [
+    {
+        "nickname": "사용자1",
+        "content": "이것은 첫 번째 댓글의 내용입니다",
+        "password": "password1",
+    },
+    {
+        "nickname": "사용자2",
+        "content": "이것은 두 번째 댓글의 내용입니다",
+        "password": "password2",
+    },
+    {
+        "nickname": "사용자3",
+        "content": "이것은 세 번째 댓글의 내용입니다",
+        "password": "password3",
+    },
+    {
+        "nickname": "사용자4",
+        "content": "이것은 네 번째 댓글의 내용입니다",
+        "password": "password4",
+    },
+    {
+        "nickname": "사용자5",
+        "content": "이것은 다섯 번째 댓글의 내용입니다",
+        "password": "password5",
+    },
+];

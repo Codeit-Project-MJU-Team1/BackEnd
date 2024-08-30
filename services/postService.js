@@ -88,7 +88,6 @@ async function isPublic(postId) {
 }
 
 async function getPosts(groupId, params) {
-    // groupId 처리가 문제인거 같음
     const { page = 0, pageSize = 10, sortBy, keyword = "", isPublic = "true"} = params;
     const limit = Number(pageSize);
     const offset = Number(page) * limit;

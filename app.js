@@ -5,6 +5,7 @@ import errorHandler from './middlewares/errorHandler.js';
 import groupController from './controllers/groupController.js';
 import postController from  './controllers/postController.js';
 import imageController from './controllers/imageController.js';
+import commentController from './controllers/commentController.js';
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/api/groups', groupController);
 app.use('/api/posts', postController);
 app.use('/api/image', imageController);
+app.use('/api/comments', commentController);
 
 app.use(errorHandler);
 

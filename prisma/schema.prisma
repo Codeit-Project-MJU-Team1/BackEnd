@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test{
+model Test {
   id String @id
 }
 
@@ -29,11 +29,11 @@ model Group {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   introduction String
-  posts        Post[]  // 1:M
+  posts        Post[] // 1:M
 }
 
 model Post {
-  id           Int      @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   nickname     String
   title        String
   content      String
@@ -45,7 +45,18 @@ model Post {
   isPublic     Boolean
   likeCount    Int
   commentCount Int
-  createdAt    DateTime @default(now())
+  createdAt    DateTime  @default(now())
   group        Group?    @relation(fields: [groupId], references: [id], onDelete: Cascade) // FK
   groupId      Int?
+  comments     Comment[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  nickname  String
+  password  String
+  content   String
+  createdAt DateTime @default(now())
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int?
 }
