@@ -8,6 +8,18 @@ async function findById(id) {
     });
 }
 
+async function findByDate(groupId, start, end){
+    return await prisma.post.findFirst({
+        where: {
+            groupId,
+            createdAt: {
+                gte: start,
+                lt : end,
+            },
+        },
+    });
+}
+
 async function save(groupId, data) {
     return await prisma.post.create({
         data: {
@@ -71,6 +83,7 @@ async function getPosts(offset, limit, orderBy, keyword, isPublic, groupId){
 
 export default {
     save, findById,
-    update, remove,
-    like, getPosts,
+    findByDate, update,
+    remove, like,
+    getPosts,
 };

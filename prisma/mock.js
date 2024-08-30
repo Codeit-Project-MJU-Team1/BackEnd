@@ -7,6 +7,7 @@ export const GROUPS = [
         "likeCount": 10,
         "badges": ["badge1"],
         "postCount": 0,
+        "postStreak" : 0,
         "introduction": "첫 번째 그룹에 오신 것을 환영합니다."
     },
     {
@@ -17,6 +18,7 @@ export const GROUPS = [
         "likeCount": 25,
         "badges": ["badge2", "badge4"],
         "postCount": 0,
+        "postStreak" : 1,
         "introduction": "두 번째 그룹에 대해 알아보세요."
     },
     {
@@ -27,6 +29,7 @@ export const GROUPS = [
         "likeCount": 15,
         "badges": ["badge1", "badge3", "badge5"],
         "postCount": 0,
+        "postStreak" : 2,
         "introduction": "세 번째 그룹의 활동을 확인하세요."
     },
     {
@@ -37,6 +40,7 @@ export const GROUPS = [
         "likeCount": 30,
         "badges": ["badge2", "badge3"],
         "postCount": 0,
+        "postStreak" : 7,
         "introduction": "네 번째 그룹에 대한 정보를 알아보세요."
     },
     {
@@ -47,6 +51,7 @@ export const GROUPS = [
         "likeCount": 5,
         "badges": ["badge1", "badge2", "badge3", "badge4", "badge5"],
         "postCount": 0,
+        "postStreak" : 9,
         "introduction": "다섯 번째 그룹의 다양한 활동에 참여하세요."
     }
 ];
