@@ -31,6 +31,12 @@ async function like(groupId){
         throw new NotFoundError("존재하지 않습니다");
     }
     await groupRepository.like(groupId);
+    // 현재 공감 수 확인
+    const updatedGroup = await groupRepository.findById(groupId);
+    if (updatedGroup.likeCount >= 10000 && !updatedGroup.badges.includes("groupLikeOverTenThousand")) {
+        await groupRepository.getGroupsLikeBadge(groupId, "groupLikeOverTenThousand"); // 배지 추가
+    }
+
     return { message : "그룹 공감하기 성공" };
 }
 
