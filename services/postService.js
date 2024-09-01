@@ -104,6 +104,14 @@ async function likePost(postId) {
         throw new NotFoundError("존재하지 않습니다");
     }
     await postRepository.like(postId);
+    
+    // groupId를 가져와야됨
+
+    const updatedPost = await postRepository.findById(postId);
+    const updatedGroup = await groupRepository.findById(updatedPost.groupId);
+    if (updatedPost.likeCount >= 10000 && !updatedGroup.badges.includes("PostLikeOverTenThousand")) {
+        await groupRepository.getGroupsLikeBadge(updatedPost.groupId, "PostLikeOverTenThousand"); // 배지 추가
+    }
     return { message : "게시글 공감하기 성공" };
 }
 
