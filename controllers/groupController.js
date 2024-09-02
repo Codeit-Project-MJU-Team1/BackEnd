@@ -104,10 +104,12 @@ groupController.post('/:groupId/posts', async(req, res, next) => {
         const groupId = Number(req.params.groupId);
         const {moment , ...rest} = req.body;
         rest.moment = new Date(moment);
+        console.log(rest);
         assert(rest, createPost);
         const data = await postService.createPost(groupId, rest);
         return res.status(200).json(data);
     } catch(error){
+        console.log(error);
         next(error);
     }
 });
