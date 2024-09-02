@@ -109,8 +109,8 @@ async function likePost(postId) {
 
     const updatedPost = await postRepository.findById(postId);
     const updatedGroup = await groupRepository.findById(updatedPost.groupId);
-    if (updatedPost.likeCount >= 10000 && !updatedGroup.badges.includes("PostLikeOverTenThousand")) {
-        await groupRepository.getGroupsLikeBadge(updatedPost.groupId, "PostLikeOverTenThousand"); // 배지 추가
+    if (updatedPost.likeCount >= 10000 && !updatedGroup.badges.includes("postLikeOverTenThousand")) {
+        await groupRepository.getGroupsLikeBadge(updatedPost.groupId, "postLikeOverTenThousand"); // 배지 추가
     }
     return { message : "게시글 공감하기 성공" };
 }
