@@ -3,19 +3,17 @@ import groupRepository from '../repositories/groupRepository.js';
 import {ForbiddenError, NotFoundError , UnauthorizedError} from '../config/error.js';
 
 async function createPost(groupId, post){
-    const newPost = await groupRepository.findById(groupId); 
-    
-    if (!newPost) {
+    const group = await groupRepository.findById(groupId); 
+    if (!group) {
         throw new NotFoundError('존재하지 않습니다');
     }
-    if(newPost.password !== post.groupPassword){
+    if(group.password !== post.groupPassword){
         throw new ForbiddenError('비밀번호가 틀렸습니다');
     }
-    
-    console.log(post);
     const {postPassword, groupPassword, ...data} = post;
     data.password = postPassword;
     const createdPost = await postRepository.save(groupId, data);
+    await groupRepository.update(groupId, {postCount : group.postCount + 1});
     return filterSensitiveUserData(createdPost);
 }
 
@@ -48,7 +46,9 @@ async function deletePost(postId, postPassword) {
     if(existedPost.password !== postPassword){
         throw new ForbiddenError("비밀번호가 틀렸습니다");
     }
+    const group = await groupRepository.findById(existedPost.groupId);
     await postRepository.remove(postId);
+    await groupRepository.update(group.id, {postCount : group.postCount - 1});
     return { message : "게시글 삭제 성공" };
 }
 
@@ -88,7 +88,6 @@ async function isPublic(postId) {
 }
 
 async function getPosts(groupId, params) {
-    // groupId 처리가 문제인거 같음
     const { page = 0, pageSize = 10, sortBy, keyword = "", isPublic = "true"} = params;
     const limit = Number(pageSize);
     const offset = Number(page) * limit;

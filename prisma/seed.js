@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { GROUPS, POSTS } from "./mock.js";
+import { GROUPS, POSTS, COMMENTS } from "./mock.js";
 
 const prisma = new PrismaClient();
 
@@ -38,6 +38,20 @@ async function seeding() {
               connect : {
                 id : group.id,
               },
+            },
+          },
+        });
+      }
+    }
+
+    const posts = await prisma.post.findMany();
+    for(const post of posts){
+      for(const data of COMMENTS){
+        await prisma.comment.create({
+          data : {
+            ...data,
+            post : {
+              connect : { id : post.id},
             },
           },
         });
