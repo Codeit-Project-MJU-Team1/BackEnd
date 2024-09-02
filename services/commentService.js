@@ -21,6 +21,10 @@ async function getComment(postId, params) {
     const { page = 0, pageSize = 10} = params;
     const limit = Number(pageSize);
     const offset = Number(page) * limit;
+    const existedPost = await postRepository.findById(postId);
+    if(!existedPost){
+        throw new NotFoundError("존재하지 않습니다");
+    }
     return await commentRepository.getComments(offset, limit, postId); 
 }
 
