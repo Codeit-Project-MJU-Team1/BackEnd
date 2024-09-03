@@ -11,6 +11,16 @@ async function readGroup(groupId) {
     if(!group){
         throw new NotFoundError("존재하지 않습니다");
     }
+    //그룹 생성 1년 달성 배지 관련
+    if(!group.badges.includes("createGroup_1Year")){
+        const dayAfterCreate = Math.floor(Math.abs(new Date() - group.createdAt) / (1000 * 60 * 60 * 24));
+        console.log(dayAfterCreate);
+        if(dayAfterCreate >= 365){
+            group.badges.push("createGroup_1Year");
+            groupRepository.update(groupId, {"badges" : group.badges});
+            console.log(`${groupId} 그룹이 그룹 생성 1년 달성 배지 획득`);
+        }
+    }
     return filterSensitiveUserData(await groupRepository.findById(groupId));
 }
 
