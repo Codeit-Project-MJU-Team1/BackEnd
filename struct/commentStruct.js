@@ -2,14 +2,14 @@ import * as s from 'superstruct';
 
 export const createComment = s.object({
     nickname : s.size(s.string(), 1, 30),
-    content : s.string(),
+    content : s.size(s.string(), 1, 300),
     password : s.size(s.string(), 1, 30),
 });
 
 export const updateComment = s.object({
     nickname : s.size(s.string(), 1, 30),
     content: s.size(s.string(), 1, 300),
-    commentPassword: s.size(s.string(), 1, 30),
+    password: s.size(s.string(), 1, 30),
 });
 
 export const deleteComment = s.object({

@@ -29,6 +29,7 @@ postController.delete('/:postId', async(req, res, next) => {
         const data = await postService.deletePost(postId, req.body.postPassword);
         return res.status(200).send(data);
     } catch(error){
+        console.log(error);
         next(error);
     }
 })

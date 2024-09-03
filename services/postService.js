@@ -47,6 +47,10 @@ async function createPost(groupId, post){
         group.badges.push("postCreate_20");
         await groupRepository.update(groupId, {"badges" : group.badges});
     }
+    const {postPassword, groupPassword, ...data} = post;
+    data.password = postPassword;
+    const createdPost = await postRepository.save(groupId, data);
+    await groupRepository.update(groupId, {postCount : group.postCount + 1});
     return filterSensitiveUserData(createdPost);
 }
 
@@ -79,7 +83,9 @@ async function deletePost(postId, postPassword) {
     if(existedPost.password !== postPassword){
         throw new ForbiddenError("비밀번호가 틀렸습니다");
     }
+    const group = await groupRepository.findById(existedPost.groupId);
     await postRepository.remove(postId);
+    await groupRepository.update(group.id, {postCount : group.postCount - 1});
     return { message : "게시글 삭제 성공" };
 }
 
