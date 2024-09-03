@@ -4,21 +4,19 @@ import {ForbiddenError, NotFoundError , UnauthorizedError} from '../config/error
 
 async function createPost(groupId, post){
     const group = await groupRepository.findById(groupId); 
-    
     if (!group) {
         throw new NotFoundError('존재하지 않습니다');
     }
     if(group.password !== post.groupPassword){
         throw new ForbiddenError('비밀번호가 틀렸습니다');
     }
-    //Badge를 위한 streak 설정
+    //7일 연속 Badge를 위한 streak 설정
     //오늘, 어제 날짜에 이미 등록된 post가 있는지 확인
     const now = new Date();
     const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1); //어제 00:00:00
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // 오늘 00:00:00
     const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1); // 내일 00:00:00
     const todayPost = await postRepository.findByDate(groupId, today, tomorrow);
-    let badge = undefined;
     if(!todayPost){
         const yesterdayPost = await postRepository.findByDate(groupId, yesterday, today);
         let streak = group.postStreak;
@@ -27,9 +25,8 @@ async function createPost(groupId, post){
             streak += 1;
             await groupRepository.update(groupId, {"postStreak" : streak});
             //배지 update
-            if(streak == 10 && !group.badges.includes("streak_10")){
-                badge = "streak_10";
-                group.badges.push(badge);
+            if(streak == 7 && !group.badges.includes("postStreak_7")){
+                group.badges.push("postStreak_7");
                 await groupRepository.update(groupId, {"badges" : group.badges});
             }
         }
@@ -47,13 +44,8 @@ async function createPost(groupId, post){
 
     // postCreate_20 배지 획득
     if(group.postCount == 20 && !group.badges.includes("postCreate_20")){
-        badge = "postCreate_20";
-        group.badges.push(badge);
+        group.badges.push("postCreate_20");
         await groupRepository.update(groupId, {"badges" : group.badges});
-    }
-    
-    if(badge){
-        createdPost.badge = badge;
     }
     return filterSensitiveUserData(createdPost);
 }
