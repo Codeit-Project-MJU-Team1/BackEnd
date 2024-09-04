@@ -26,6 +26,7 @@ model Group {
   likeCount    Int
   badges       String[]
   postCount    Int
+  postStreak   Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   introduction String

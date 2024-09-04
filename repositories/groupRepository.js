@@ -19,6 +19,7 @@ async function save(group) {
             likeCount : 0,
             badges : [],
             postCount : 0,
+            postStreak : 0,
             introduction : group.introduction,
         },
     });
@@ -80,6 +81,19 @@ async function getGroupsByBadge(offset, limit,keyword,isPublic) {
     `;
 }
 
+async function getGroupsLikeBadge(groupId, badgeName) {
+    return await prisma.group.update({
+        where: {
+            id: groupId,
+        },
+        data: {
+            badges: {
+                push: badgeName, // badges 배열에 배지 추가
+            },
+        },
+    });
+}
+
 export default{
     findById,
     save,
@@ -88,4 +102,5 @@ export default{
     like,
     getGroups,
     getGroupsByBadge,
+    getGroupsLikeBadge,
 };
