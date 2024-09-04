@@ -24,7 +24,7 @@ async function save(groupId, data) {
     return await prisma.post.create({
         data: {
             ...data,
-            likeCount: 9990,
+            likeCount: 0,
             commentCount: 0,
             group : {
                 connect: {id : groupId}
