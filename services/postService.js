@@ -35,6 +35,9 @@ async function createPost(groupId, post){
             await groupRepository.update(groupId, {"postStreak" : 1});
         }
     }
+    const {postPassword, groupPassword, ...data} = post;
+    data.password = postPassword;
+    const createdPost = await postRepository.save(groupId, data);
 
     // 게시글 등록에 따른 postCount 증가
     const updatedPostCount = group.postCount + 1;
@@ -42,10 +45,10 @@ async function createPost(groupId, post){
         group.badges.push("postCreate_20");
         await groupRepository.update(groupId, { "badges": group.badges });
     }
-
+  
     // postCount 업데이트
     await groupRepository.update(groupId, { postCount: updatedPostCount });
-
+  
     return filterSensitiveUserData(createdPost);
 }
 
