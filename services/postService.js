@@ -40,14 +40,15 @@ async function createPost(groupId, post){
     const createdPost = await postRepository.save(groupId, data);
 
     // 게시글 등록에 따른 postCount 증가
-    await groupRepository.update(groupId, {postCount : group.postCount + 1});
-
-    // postCreate_20 배지 획득
-    if(group.postCount == 20 && !group.badges.includes("postCreate_20")){
+    const updatedPostCount = group.postCount + 1;
+    if (updatedPostCount === 20 && !group.badges.includes("postCreate_20")) {
         group.badges.push("postCreate_20");
-        await groupRepository.update(groupId, {"badges" : group.badges});
+        await groupRepository.update(groupId, { "badges": group.badges });
     }
-    await groupRepository.update(groupId, {postCount : group.postCount + 1});
+  
+    // postCount 업데이트
+    await groupRepository.update(groupId, { postCount: updatedPostCount });
+  
     return filterSensitiveUserData(createdPost);
 }
 

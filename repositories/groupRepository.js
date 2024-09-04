@@ -16,7 +16,7 @@ async function save(group) {
             password : group.password,
             imageUrl : group.imageUrl,
             isPublic : group.isPublic,
-            likeCount : 9997,
+            likeCount : 0,
             badges : [],
             postCount : 0,
             postStreak : 0,
